@@ -289,9 +289,9 @@
     </dependency>
 
     <dependency>
-      <groupId>org.hbase</groupId>
-      <artifactId>asynchbase</artifactId>
-      <version>@ASYNCHBASE_VERSION@</version>
+      <groupId>oel.local</groupId>
+      <artifactId>myasynchbase</artifactId>
+      <version>1.0</version>
     </dependency>
 
     <!-- runtime dependencies -->
