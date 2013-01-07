@@ -25,6 +25,11 @@ The following changes have been committed to this fork.
 
 * Atomic Increment functionality enabled via an "inc" command.
   * This requires my fork of aysnchbase
+* Adding TsdApi class to expose OpenTSDB internals
+  * Currently only "Query" functionality exposed
 * Maximum # of tags for 1 datapoint has been incresed from 8 to 16
 * &ascii queries will return datapoints in the exact timeframe requested, with no padding
-  * Thanks to manolama for the code
+  * Thanks to manolama
+* Increased scan size to (1024 * 10)
+  * Thanks to Brian Hawkins
+
