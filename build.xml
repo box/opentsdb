@@ -1,0 +1,75 @@
+<project name="OpenTSDB" default="package" basedir=".">
+
+    <property name="src" location="src"/>
+    <property name="build" location="build"/>
+    <property name="lib" location="build/third_party"/>
+
+    <target name="compile" description="compile the source ">
+    	<echo message="${lib}" />
+        <javac srcdir="." verbose="false" destdir="${build}" includeantruntime="false">
+            <compilerarg value="-Xlint"/>
+                <include name="src/core/Aggregator.java" /> 
+                <include name="src/core/Aggregators.java" /> 
+                <include name="src/core/CompactionQueue.java" /> 
+                <include name="src/core/Const.java" /> 
+                <include name="src/core/DataPoint.java" /> 
+                <include name="src/core/DataPoints.java" /> 
+                <include name="src/core/DataPointsIterator.java" /> 
+                <include name="src/core/IncomingDataPoints.java" /> 
+                <include name="src/core/IllegalDataException.java" /> 
+                <include name="src/core/Internal.java" /> 
+                <include name="src/core/Query.java" /> 
+                <include name="src/core/RowKey.java" /> 
+                <include name="src/core/RowSeq.java" /> 
+                <include name="src/core/SeekableView.java" /> 
+                <include name="src/core/Span.java" /> 
+                <include name="src/core/SpanGroup.java" /> 
+                <include name="src/core/TSDB.java" /> 
+                <include name="src/core/Tags.java" /> 
+                <include name="src/core/TsdbQuery.java" /> 
+                <include name="src/core/WritableDataPoints.java" /> 
+                <include name="src/graph/Plot.java" /> 
+                <include name="src/stats/Histogram.java" /> 
+                <include name="src/stats/StatsCollector.java" /> 
+                <include name="src/tools/ArgP.java" /> 
+                <include name="src/tools/CliOptions.java" /> 
+                <include name="src/tools/CliQuery.java" /> 
+                <include name="src/tools/DumpSeries.java" /> 
+                <include name="src/tools/Fsck.java" /> 
+                <include name="src/tools/TSDMain.java" /> 
+                <include name="src/tools/TextImporter.java" /> 
+                <include name="src/tools/UidManager.java" /> 
+                <include name="src/tsd/BadRequestException.java" /> 
+                <include name="src/tsd/ConnectionManager.java" /> 
+                <include name="src/tsd/GnuplotException.java" /> 
+                <include name="src/tsd/GraphHandler.java" /> 
+                <include name="src/tsd/HttpQuery.java" /> 
+                <include name="src/tsd/HttpRpc.java" /> 
+                <include name="src/tsd/LineBasedFrameDecoder.java" /> 
+                <include name="src/tsd/LogsRpc.java" /> 
+                <include name="src/tsd/PipelineFactory.java" /> 
+                <include name="src/tsd/PutDataPointRpc.java" /> 
+                <include name="src/tsd/IncDataPointRpc.java" /> 
+                <include name="src/tsd/RpcHandler.java" /> 
+                <include name="src/tsd/StaticFileRpc.java" /> 
+                <include name="src/tsd/TelnetRpc.java" /> 
+                <include name="src/tsd/WordSplitter.java" /> 
+                <include name="src/tsd/TsdApi.java" /> 
+                <include name="src/uid/NoSuchUniqueId.java" /> 
+                <include name="src/uid/NoSuchUniqueName.java" /> 
+                <include name="src/uid/UniqueId.java" /> 
+                <include name="src/uid/UniqueIdInterface.java" /> 
+                <include name="build/src/BuildData.java" />
+            <classpath>
+            <fileset dir="${lib}">
+                <include name="**/*.jar"/>
+            </fileset>
+            </classpath>
+        </javac>
+    </target>    
+	
+    <target name="package" depends="compile">
+    </target>
+
+</project>
+
