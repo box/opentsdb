@@ -8,19 +8,21 @@
     <target name="init" description="performing bootstrap">
         <mkdir dir="${build}/app" />
         <mkdir dir="${build}/test" />
-        <exec executable="${build-aux}/gen_build_data.sh" dir="${build}" >
-            <arg line="${build}/src/BuildData.java net.opentsdb"/>
-        </exec>
+        <mkdir dir="${build}/gwt" />
+        <copy file="manifest.in" toFile="${build}/manifest" />
         <copy file="tsdb.in" toFile="${build}/tsdb" />
         <chmod file="${build}/tsdb" perm="755" /> 
-        <copy file="manifest.in" toFile="${build}/manifest" />
     </target>
 
     <target name="clean" description="remove build artifacts" >
         <delete dir="${build}"/>
     </target>
 
-    <target name="compile-app" depends="init" description="compile-app the source ">
+    <target name="compile-app" depends="init" description="compile the source ">
+        <exec executable="${build-aux}/gen_build_data.sh" dir="${build}" >
+            <arg line="${build}/src/BuildData.java net.opentsdb"/>
+        </exec>
+
         <javac srcdir="." verbose="false" destdir="${build}/app" includeantruntime="false">
             <compilerarg value="-Xlint"/>
                 <include name="src/core/Aggregator.java" /> 
@@ -83,7 +85,27 @@
         </javac>
 
         <jar destfile="${build}/tsdb-1.1.0.jar" basedir="${build}/app" />
+
     </target>    
+
+    <target name="compile-ui" depends="init" >
+        <java classname="com.google.gwt.dev.Compiler" fork="true" >
+             <classpath>
+             	<fileset dir="${lib}/gwt" />
+             	<pathelement path="${src}/" /> 
+             </classpath>
+             <arg line="-ea -war ${build}/gwt tsd.QueryUi"/> 
+       </java>
+
+       <mkdir dir="${build}/static" />
+       <copy file="${src}/tsd/static/favicon.ico" toDir="${build}/static" />
+       <copy toDir="${build}/static" >
+           <fileset dir="${build}/gwt/queryui/" >
+               <include name="**/*" />
+           </fileset>
+       </copy>
+
+    </target>
 
     <target name="compile-test" depends="compile-app">
         <javac srcdir="." verbose="false" destdir="${build}/test" includeantruntime="false">
@@ -104,11 +126,10 @@
         </javac>
     </target>
 	
-    <target name="dist" depends="compile-app">
+    <target name="dist" depends="compile-app,compile-ui">
     </target>
 
-    <target name="test" depends="compile-app,compile-test">
-
+    <target name="test" depends="compile-app,compile-test,compile-ui">
     </target>
 
 </project>
