@@ -7,8 +7,6 @@
     <property name="build-aux" location="build-aux"/>
 
     <target name="init" description="performing bootstrap">
-        <delete dir="${dist}"/>
-
         <mkdir dir="${build}/app" />
         <mkdir dir="${build}/test" />
         <mkdir dir="${build}/gwt" />
@@ -150,27 +148,34 @@
     </target>
 	
     <target name="dist" depends="init,compile-app,compile-ui"> 
-       <mkdir dir="${dist}/logs" />
-       <copy toDir="${dist}" >
+       <delete dir="${dist}"/>
+
+       <mkdir dir="${dist}/opentsdb" />
+       <mkdir dir="${dist}/opentsdb/logs" />
+       <copy toDir="${dist}/opentsdb" >
            <fileset dir="${build}" >
                <include name="static/**/*" />
            </fileset>
        </copy>
 
-       <copy toDir="${dist}" flatten="true" >
+       <copy toDir="${dist}/opentsdb" flatten="true" >
             <fileset dir="${build}" >
                 <include name="*.jar"/>
             </fileset>
        </copy>
 
-       <copy toDir="${dist}" file="${build}/tsdb" />
-       <copy toDir="${dist}" file="${build}/mygnuplot.sh" />
-       <copy toDir="${dist}" file="${build}/start-tsdb.sh" />
-       <copy toDir="${dist}" file="${build}/tsdb.local" />
-       <copy toDir="${dist}" file="${build}/logback.xml" />
+       <copy toDir="${dist}/opentsdb" file="${build}/tsdb" />
+       <copy toDir="${dist}/opentsdb" file="${build}/mygnuplot.sh" />
+       <copy toDir="${dist}/opentsdb" file="${build}/start-tsdb.sh" />
+       <copy toDir="${dist}/opentsdb" file="${build}/tsdb.local" />
+       <copy toDir="${dist}/opentsdb" file="${build}/logback.xml" />
 
-       <chmod file="${dist}/tsdb" perm="755" /> 
-       <chmod file="${dist}/start-tsdb.sh" perm="755" /> 
+       <chmod file="${dist}/opentsdb/tsdb" perm="755" /> 
+       <chmod file="${dist}/opentsdb/start-tsdb.sh" perm="755" /> 
+
+       <tar destfile="${dist}/opentsdb-1.1.0.tgz" basedir="${dist}" compression="gzip" />
+
+       <delete dir="${dist}/opentsdb"/>
     </target>
 
     <target name="test" depends="compile-app,compile-test,compile-ui">
