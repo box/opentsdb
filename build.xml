@@ -6,19 +6,22 @@
     <property name="build-aux" location="build-aux"/>
 
     <target name="init" description="performing bootstrap">
-        <mkdir dir="${build}" />
+        <mkdir dir="${build}/app" />
+        <mkdir dir="${build}/test" />
         <exec executable="${build-aux}/gen_build_data.sh" dir="${build}" >
             <arg line="${build}/src/BuildData.java net.opentsdb"/>
         </exec>
-        
+        <copy file="tsdb.in" toFile="${build}/tsdb" />
+        <chmod file="${build}/tsdb" perm="755" /> 
+        <copy file="manifest.in" toFile="${build}/manifest" />
     </target>
 
     <target name="clean" description="remove build artifacts" >
         <delete dir="${build}"/>
     </target>
 
-    <target name="compile" depends="init" description="compile the source ">
-        <javac srcdir="." verbose="false" destdir="${build}" includeantruntime="false">
+    <target name="compile-app" depends="init" description="compile-app the source ">
+        <javac srcdir="." verbose="false" destdir="${build}/app" includeantruntime="false">
             <compilerarg value="-Xlint"/>
                 <include name="src/core/Aggregator.java" /> 
                 <include name="src/core/Aggregators.java" /> 
@@ -78,12 +81,34 @@
                 </fileset>
             </classpath>
         </javac>
+
+        <jar destfile="${build}/tsdb-1.1.0.jar" basedir="${build}/app" />
     </target>    
+
+    <target name="compile-test" depends="compile-app">
+        <javac srcdir="." verbose="false" destdir="${build}/test" includeantruntime="false">
+            <compilerarg value="-Xlint"/>
+                <include name="test/core/TestAggregators.java" /> 
+                <include name="test/core/TestCompactionQueue.java" /> 
+                <include name="test/core/TestTags.java" /> 
+                <include name="test/stats/TestHistogram.java" /> 
+                <include name="test/tsd/TestGraphHandler.java" /> 
+                <include name="test/uid/TestNoSuchUniqueId.java" /> 
+                <include name="test/uid/TestUniqueId.java" />
+            <classpath>
+                <fileset dir="${lib}">
+                    <include name="**/*.jar"/>
+                </fileset>
+                <pathelement location="${build}/tsdb-1.1.0.jar" />
+            </classpath>
+        </javac>
+    </target>
 	
-    <target name="package" depends="compile">
+    <target name="dist" depends="compile-app">
     </target>
 
-    <target name="test" depends="compile">
+    <target name="test" depends="compile-app,compile-test">
+
     </target>
 
 </project>
