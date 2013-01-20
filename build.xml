@@ -8,7 +8,7 @@
     <property name="build-aux" location="build-aux"/>
 	
     <target name="init" description="performing bootstrap">
-		<condition property="isWindows">
+        <condition property="isWindows">
             <os family="windows" />
         </condition>
 
@@ -47,7 +47,7 @@
 	
 	<target name="gen-builddata" unless="isWindows" >
         <exec executable="${build-aux}/gen_build_data.sh" dir="${src}/net/opentsdb" >
-            <arg line="${build}/src/BuildData.java net.opentsdb"/>
+            <arg line="${src}/net/opentsdb/BuildData.java net.opentsdb"/>
         </exec>
 	</target>
 	
