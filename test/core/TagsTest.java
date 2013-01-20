@@ -17,7 +17,7 @@ import java.util.HashMap;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
-public final class TestTags {
+public final class TagsTest {
 
   @Test
   public void parseSuccessful() {

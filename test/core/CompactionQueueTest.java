@@ -48,7 +48,7 @@ import static org.powermock.api.mockito.PowerMockito.mock;
                   "com.sum.*", "org.xml.*"})
 @PrepareForTest({ CompactionQueue.class, CompactionQueue.Thrd.class,
                   TSDB.class, UniqueId.class })
-final class TestCompactionQueue {
+final class CompactionQueueTest {
 
   private TSDB tsdb = mock(TSDB.class);
   private static final byte[] TABLE = { 't', 'a', 'b', 'l', 'e' };

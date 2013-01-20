@@ -4,6 +4,7 @@
     <property name="build" location="build"/>
     <property name="dist" location="dist"/>
     <property name="lib" location="third_party"/>
+    <property name="test.dir" location="build/test"/>
     <property name="build-aux" location="build-aux"/>
 
     <target name="init" description="performing bootstrap">
@@ -129,11 +130,11 @@
     </target>
 
     <target name="compile-test" depends="compile-app">
-        <javac srcdir="." verbose="false" destdir="${build}/test" includeantruntime="false">
+        <javac srcdir="." verbose="false" destdir="${test.dir}" includeantruntime="false">
             <compilerarg value="-Xlint"/>
-                <include name="test/core/TestAggregators.java" /> 
-                <include name="test/core/TestCompactionQueue.java" /> 
-                <include name="test/core/TestTags.java" /> 
+                <include name="test/core/AggregatorsTest.java" /> 
+                <include name="test/core/CompactionQueueTest.java" /> 
+                <include name="test/core/TagsTest.java" /> 
                 <include name="test/stats/TestHistogram.java" /> 
                 <include name="test/tsd/TestGraphHandler.java" /> 
                 <include name="test/uid/TestNoSuchUniqueId.java" /> 
@@ -178,7 +179,57 @@
        <delete dir="${dist}/opentsdb"/>
     </target>
 
-    <target name="test" depends="compile-app,compile-test,compile-ui">
+    <target name="execute-test" >
+        <echo message="${test.class.name}"/> 
+           <java classname="org.junit.runner.JUnitCore" fork="true" >
+             <classpath>
+             	<fileset dir="${lib}" >
+             	    <include name="**/*.jar" />
+             	</fileset>
+             	<pathelement path="${build}/test" /> 
+             	<pathelement location="${build}/tsdb-1.1.0.jar" /> 
+             </classpath>
+             <arg line="${test.class.name}"/> 
+           </java>
+    </target>
+
+    <target name="test" >  <!-- depends="compile-app,compile-test">    -->
+       <property name="test.class.name" value="net.opentsdb.core.TagsTest" />
+       <antcall target="execute-test" />
+
+       <property name="test.class.name" value="net.opentsdb.core.AggregatorsTest" />
+       <antcall target="execute-test" />
+
+       <property name="test.class.name" value="net.opentsdb.core.CompactionQueueTest" />
+       <antcall target="execute-test" />
+
+       <property name="test.class.name" value="net.opentsdb.tsd.GraphHandlerTest" />
+       <antcall target="execute-test" />
+
+       <property name="test.class.name" value="net.opentsdb.stats.HistogramTest" />
+       <antcall target="execute-test" />
+
+       <property name="test.class.name" value="net.opentsdb.uid.UniqueIdTest" />
+       <antcall target="execute-test" />
+
+       <property name="test.class.name" value="net.opentsdb.uid.NoSuchUniqueIdTest" />
+       <antcall target="execute-test" />
+
+       <!--
+       <junit printsummary="yes" haltonfailure="yes" showoutput="true" fork="yes">
+           <classpath>
+               <pathelement path="${lib}"/>
+               <pathelement path="${build}/app"/>
+               <pathelement path="${build}/test"/>
+           </classpath>
+           <formatter type="plain"/>
+           <batchtest  >
+               <fileset dir="${test.dir}" >
+                   <include name="**/*Test.class" />
+               </fileset>
+           </batchtest>  
+       </junit>
+       -->
     </target>
 
 </project>
