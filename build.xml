@@ -2,10 +2,22 @@
 
     <property name="src" location="src"/>
     <property name="build" location="build"/>
-    <property name="lib" location="build/third_party"/>
+    <property name="lib" location="third_party"/>
+    <property name="build-aux" location="build-aux"/>
 
-    <target name="compile" description="compile the source ">
-    	<echo message="${lib}" />
+    <target name="init" description="performing bootstrap">
+        <mkdir dir="${build}" />
+        <exec executable="${build-aux}/gen_build_data.sh" dir="${build}" >
+            <arg line="${build}/src/BuildData.java net.opentsdb"/>
+        </exec>
+        
+    </target>
+
+    <target name="clean" description="remove build artifacts" >
+        <delete dir="${build}"/>
+    </target>
+
+    <target name="compile" depends="init" description="compile the source ">
         <javac srcdir="." verbose="false" destdir="${build}" includeantruntime="false">
             <compilerarg value="-Xlint"/>
                 <include name="src/core/Aggregator.java" /> 
@@ -61,9 +73,9 @@
                 <include name="src/uid/UniqueIdInterface.java" /> 
                 <include name="build/src/BuildData.java" />
             <classpath>
-            <fileset dir="${lib}">
-                <include name="**/*.jar"/>
-            </fileset>
+                <fileset dir="${lib}">
+                    <include name="**/*.jar"/>
+                </fileset>
             </classpath>
         </javac>
     </target>    
