@@ -2,20 +2,44 @@
 
     <property name="src" location="src"/>
     <property name="build" location="build"/>
+    <property name="dist" location="dist"/>
     <property name="lib" location="third_party"/>
     <property name="build-aux" location="build-aux"/>
 
     <target name="init" description="performing bootstrap">
+        <delete dir="${dist}"/>
+
         <mkdir dir="${build}/app" />
         <mkdir dir="${build}/test" />
         <mkdir dir="${build}/gwt" />
+        <mkdir dir="${build}/logs" />
+
         <copy file="manifest.in" toFile="${build}/manifest" />
         <copy file="tsdb.in" toFile="${build}/tsdb" />
+        <copy file="${src}/mygnuplot.sh" toDir="${build}" /> 
+        <copy file="${src}/logback.xml" toDir="${build}" /> 
+        <copy file="${src}/start-tsdb.sh" toDir="${build}" /> 
+        <copy file="${src}/tsdb.local" toDir="${build}" /> 
+
+        <copy toDir="${build}" flatten="true" >
+            <fileset dir="${lib}">
+                <include name="hbase/*.jar"/>
+                <include name="guava/*.jar"/>
+                <include name="suasync/*.jar"/>
+                <include name="slf4j/*.jar"/>
+                <include name="logback/*.jar"/>
+                <include name="zookeeper/*.jar"/>
+                <include name="netty/*.jar"/>
+            </fileset>
+        </copy>
+
         <chmod file="${build}/tsdb" perm="755" /> 
+        <chmod file="${build}/start-tsdb.sh" perm="755" /> 
     </target>
 
     <target name="clean" description="remove build artifacts" >
         <delete dir="${build}"/>
+        <delete dir="${dist}"/>
     </target>
 
     <target name="compile-app" depends="init" description="compile the source ">
@@ -104,7 +128,6 @@
                <include name="**/*" />
            </fileset>
        </copy>
-
     </target>
 
     <target name="compile-test" depends="compile-app">
@@ -126,7 +149,28 @@
         </javac>
     </target>
 	
-    <target name="dist" depends="compile-app,compile-ui">
+    <target name="dist" depends="init,compile-app,compile-ui"> 
+       <mkdir dir="${dist}/logs" />
+       <copy toDir="${dist}" >
+           <fileset dir="${build}" >
+               <include name="static/**/*" />
+           </fileset>
+       </copy>
+
+       <copy toDir="${dist}" flatten="true" >
+            <fileset dir="${build}" >
+                <include name="*.jar"/>
+            </fileset>
+       </copy>
+
+       <copy toDir="${dist}" file="${build}/tsdb" />
+       <copy toDir="${dist}" file="${build}/mygnuplot.sh" />
+       <copy toDir="${dist}" file="${build}/start-tsdb.sh" />
+       <copy toDir="${dist}" file="${build}/tsdb.local" />
+       <copy toDir="${dist}" file="${build}/logback.xml" />
+
+       <chmod file="${dist}/tsdb" perm="755" /> 
+       <chmod file="${dist}/start-tsdb.sh" perm="755" /> 
     </target>
 
     <target name="test" depends="compile-app,compile-test,compile-ui">
