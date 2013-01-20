@@ -179,41 +179,37 @@
        <delete dir="${dist}/opentsdb"/>
     </target>
 
-    <target name="execute-test" >
-        <echo message="${test.class.name}"/> 
-           <java classname="org.junit.runner.JUnitCore" fork="true" >
-             <classpath>
-             	<fileset dir="${lib}" >
-             	    <include name="**/*.jar" />
-             	</fileset>
-             	<pathelement path="${build}/test" /> 
-             	<pathelement location="${build}/tsdb-1.1.0.jar" /> 
-             </classpath>
-             <arg line="${test.class.name}"/> 
-           </java>
-    </target>
+    <macrodef name="executetest" >
+        <attribute name="name"/> 
+        <sequential>
+        <echo message="------------------------------------" /> 
+        <echo message="Executing @{name}" /> 
+        <echo message="------------------------------------" /> 
+        <java classname="org.junit.runner.JUnitCore" fork="true" failonerror="true" >
+          <classpath>
+            <fileset dir="${lib}" >
+               <include name="**/*.jar" />
+            </fileset>
+            <pathelement path="${build}/test" /> 
+            <pathelement location="${build}/tsdb-1.1.0.jar" /> 
+          </classpath>
+          <arg line="@{name}"/> 
+        </java>
+        </sequential>
+    </macrodef>
 
-    <target name="test" >  <!-- depends="compile-app,compile-test">    -->
-       <property name="test.class.name" value="net.opentsdb.core.TagsTest" />
-       <antcall target="execute-test" />
+    <target name="test" depends="compile-app,compile-test">  
+       <executetest name="net.opentsdb.core.TagsTest" />
+       <executetest name="net.opentsdb.core.AggregatorsTest" />
+       <executetest name="net.opentsdb.stats.TestHistogram" />
+       <executetest name="net.opentsdb.uid.TestUniqueId" />
+       <executetest name="net.opentsdb.uid.TestNoSuchUniqueId" />
+<!--       
+       <executetest name="net.opentsdb.core.CompactionQueueTest" />  
+       <executetest name="net.opentsdb.tsd.TestGraphHandler" />
 
-       <property name="test.class.name" value="net.opentsdb.core.AggregatorsTest" />
-       <antcall target="execute-test" />
 
-       <property name="test.class.name" value="net.opentsdb.core.CompactionQueueTest" />
-       <antcall target="execute-test" />
-
-       <property name="test.class.name" value="net.opentsdb.tsd.GraphHandlerTest" />
-       <antcall target="execute-test" />
-
-       <property name="test.class.name" value="net.opentsdb.stats.HistogramTest" />
-       <antcall target="execute-test" />
-
-       <property name="test.class.name" value="net.opentsdb.uid.UniqueIdTest" />
-       <antcall target="execute-test" />
-
-       <property name="test.class.name" value="net.opentsdb.uid.NoSuchUniqueIdTest" />
-       <antcall target="execute-test" />
+-->
 
        <!--
        <junit printsummary="yes" haltonfailure="yes" showoutput="true" fork="yes">
