@@ -1,4 +1,4 @@
-<project name="OpenTSDB" default="package" basedir=".">
+<project name="OpenTSDB" default="test" basedir=".">
 
     <property name="src" location="src"/>
     <property name="build" location="build"/>
@@ -81,6 +81,9 @@
     </target>    
 	
     <target name="package" depends="compile">
+    </target>
+
+    <target name="test" depends="compile">
     </target>
 
 </project>
