@@ -1,0 +1,24 @@
+<component name="libraryTable">
+  <library name="third_party">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/third_party/guava/guava-12.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/gwt/gwt-dev-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/gwt/gwt-user-2.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/hbase/asynchbase-1.4.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/javassist/javassist-3.15.0-GA.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/logback/logback-classic-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/logback/logback-core-1.0.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/junit/junit-4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/mockito/mockito-1.9.0.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/netty/netty-3.5.9.Final.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/powermock/powermock-mockito-1.4.10.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/slf4j/jcl-over-slf4j-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/slf4j/log4j-over-slf4j-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/slf4j/slf4j-api-1.6.4.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/suasync/suasync-1.3.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/third_party/zookeeper/zookeeper-3.3.4.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

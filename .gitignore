@@ -9,3 +9,5 @@ target
 config.log
 config.status
 configure
+.idea/workspace.xml
+.idea/tasks.xml
