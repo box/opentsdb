@@ -324,6 +324,7 @@ gp.append( ""
       gp.append("\n"
                 + "set xdata time\n"
                 + "set timefmt \"%s\"\n"
+                + "if (GPVAL_VERSION < 4.6) set xtics rotate; else set xtics rotate right\n"
                 + "set output \"").append(basepath + ".png").append("\"\n"
                 + "set xrange [\"")
         .append(String.valueOf((start_time & UNSIGNED) + utc_offset))
