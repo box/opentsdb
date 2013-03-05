@@ -4,8 +4,10 @@ Makefile.in
 aclocal.m4
 autom4te.cache
 build
+dist
 target
 config.log
 config.status
 configure
-pom.xml
+.idea/workspace.xml
+.idea/tasks.xml
