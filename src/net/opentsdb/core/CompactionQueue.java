@@ -531,14 +531,13 @@ final class CompactionQueue extends ConcurrentSkipListMap<byte[], Boolean> {
                                               final byte[] value) {
     if (floatingPointValueToFix(flags, value)) {
       // The first 4 bytes should really be zeros.
-      if (value[0] == 0 && value[1] == 0 && value[2] == 0 && value[3] == 0) {
+      if (!(value[0] == 0 && value[1] == 0 && value[2] == 0 && value[3] == 0)) {
         // Just keep the last 4 bytes.
-        return new byte[] { value[4], value[5], value[6], value[7] };
-      } else {  // Very unlikely.
-        throw new IllegalDataException("Corrupted floating point value: "
+          LOG.error("Corrupted floating point value: "
           + Arrays.toString(value) + " flags=0x" + Integer.toHexString(flags)
           + " -- first 4 bytes are expected to be zeros.");
       }
+      return new byte[] { value[4], value[5], value[6], value[7] };
     }
     return value;
   }
